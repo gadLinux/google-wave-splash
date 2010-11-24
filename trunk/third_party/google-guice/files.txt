@@ -1,0 +1,2 @@
+war/WEB-INF/lib/guice-2.0.jar
+war/WEB-INF/lib/guice-servlet-2.0.jar

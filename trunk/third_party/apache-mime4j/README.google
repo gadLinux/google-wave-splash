@@ -1,0 +1,11 @@
+URL: http://james.apache.org/mime4j/
+Version: 0.6
+License: Apache 2.0
+
+License File: COPYING
+
+Description:
+MIME parser for Java.
+
+Local Modifications:
+No modifications.

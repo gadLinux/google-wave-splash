@@ -1,0 +1,3 @@
+war/WEB-INF/lib/wave-api.jar
+war/WEB-INF/lib/wave-model-20100614.jar
+war/WEB-INF/lib/wave-model-util-20100614.jar

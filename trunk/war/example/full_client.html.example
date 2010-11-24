@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title></title>
+  <link rel="stylesheet" href="../style/stuff.css">
+  <link rel="stylesheet" href="../style/main.css">
+
+  <!-- todo: deliver from the Google CDN -->
+  <script type="text/javascript" src="../js/jquery-1.4.1.min.js"></script>
+
+  <!-- todo: deliver all these three in one permanently cacheable script tag -->
+  <script type="text/javascript" src="../js/rpc.js"></script>
+  <script type="text/javascript" src="../js/full_client.js"></script>
+</head>
+<body>
+<div id="header">
+  <div id="headerInner">
+    <table id="headerLayout" cellspacing="0" summary="">
+      <tr>
+        <td id="logo">
+          <h1>
+            <a href="full_client.html.example#">Google Wave Lite</a>
+          </h1>
+        </td>
+        <td class="button">
+          <a href="full_client.html.example#"><span>New wave</span></a>
+        </td>
+        <td class="button">
+          <a href="full_client.html.example#"><span>Mark all read</span></a>
+        </td>
+        <td id="headerSearch">
+          <table id="search" cellspacing="0" summary="">
+            <tr>
+              <td>
+                <input id="searchField" name="searchField" value="Search your waves"/>
+              </td>
+              <td id="searchButton">
+                <span><span>Go</span></span>
+              </td>
+            </tr>
+          </table>
+          <!-- /#search -->
+        </td>
+        <td class="headerAlert"><div id="alertbar" class="highlight"><div id="alert">You have a happy hippgray app now!</div></div></td>
+      </tr>
+    </table>
+  </div>
+  <!-- /#headerInner" -->
+</div>
+<!-- /#header -->
+
+
+<div id="content">
+
+  <div id="debug">
+    <b>Log</b>
+  </div>
+
+   <div id="feed" class="feed">
+     @foreach{digest : digests}
+       <div class="item">
+           <div class="time">?</div>
+           <img class="icon" src="../images/comment.png" alt="chat"><div class="title">@{digest.title}</div>
+           <div class="avatar"><img src="../images/jvz.png" alt="chat"></div>
+           <div class="snippet">@{digest.snippet}</div>
+       </div>
+     @end{}
+<!--     
+     <div class="item">
+         <div class="time">6 minutes ago</div>
+         <img class="icon" src="images/comment.png" alt="chat"><div class="title">Sam: Hey dude how goes it?</div>
+         <div class="avatar"><img src="images/jvz.png" alt="chat"></div>
+         <div class="snippet">
+             <span class="tid">Borkhead said:</span> It is too early to be thinking about this,
+                but really if we end up doing a good job with this refactor, we have a shot at true
+                awesomeness. <span class="tid">Dorkhead said:</span> Strewth!1
+         </div>
+     </div>
+
+     <div class="item">
+         <div class="time">9 minutes ago</div>
+         <img class="icon" src="images/comment.png" alt="chat"><div class="title">Sam: Hey dude how goes it?</div>
+         <div class="avatar"><img src="images/dhanji.jpg" alt="chat"></div>
+         <div class="snippet">
+             <span class="tid">Borkhead said:</span> It is too early to be thinking about this,
+                but really if we end up doing a good job with this refactor, we have a shot at true
+                awesomeness. <span class="tid">Dorkhead said:</span> Strewth!1
+         </div>
+     </div>
+     <div class="item read">
+         <div class="time">20 minutes ago</div>
+         <img class="icon" src="images/page_edit.png" alt="chat"><div class="title">Sam: Hey dude how goes it?</div>
+         <div class="avatar"><img src="images/monkey.jpg" alt="chat"></div>
+         <div class="snippet">
+             <span class="tid">Borkhead said:</span> It is too early to be thinking about this,
+                but really if we end up doing a good job with this refactor, we have a shot at true
+                awesomeness. <span class="tid">Dorkhead said:</span> Strewth!1
+         </div>
+     </div>
+
+     <div class="item">
+         <div class="time">5 days ago</div>
+         <img class="icon" src="images/group.png" alt="chat"><div class="title">Sam: Hey dude how goes it?</div>
+         <div class="avatar"><img src="images/jvz.png" alt="chat"></div>
+         <div class="snippet">
+             <span class="tid">Borkhead said:</span> It is too early to be thinking about this,
+                but really if we end up doing a good job with this refactor, we have a shot at true
+                awesomeness. <span class="tid">Dorkhead said:</span> Strewth!1
+         </div>
+     </div>
+-->
+   </div>
+
+  <div id="wave" class="wave-window">
+    <div class="header">
+      <div class="title">@{title}</div>
+      <div class="wnd-close control-icon">&nbsp;</div>
+      <div class="wnd-min control-icon">&nbsp;</div>
+    </div>
+
+    <div class="conversation">
+      <div class="blip">
+        <!-- meta info -->
+        <div class="left">
+          <div class="author">Dude</div>
+          <div class="toolbar">
+            <img src="../images/cross.png" alt="delete">
+            <img src="../images/pencil.png" alt="edit">
+            <img src="../images/reply.png" alt="reply">
+          </div>
+        </div>
+
+        <!-- content goes here -->
+        <div class="right">
+          <div class="time">12:21 pm</div>
+
+          <span class="title">Android just simply rules</span>
+
+          <ul>
+            <li>It has Multitasking</li>
+            <li>It has Jesse Wilson</li>
+            <li>It is open source and free</li>
+            <li>Can be whitelabeled and what have you</li>
+          </ul>
+        </div>
+        <!-- end right -->
+
+      </div>
+      <!-- end blip -->
+
+
+      <div id="blip-123" class="blip">
+        <!-- meta info -->
+        <div class="left">
+          <div class="author">EatDude</div>
+          <div class="toolbar">
+            <img src="../images/cross.png" alt="delete">
+            <img src="../images/pencil.png" alt="edit">
+            <img src="../images/reply.png" alt="reply">
+          </div>
+        </div>
+
+        <!-- content goes here -->
+        <div class="right">
+          <div class="time">7:01 am</div>
+          <img class="picture" src="../images/breaky.jpg" alt="Breakfast!">
+          Delicious Chorizo breakfast in Wellington!
+          <p>
+        </div>
+        <!-- end right -->
+
+      </div>
+      <!-- end blip -->
+
+
+      <div class="blip">
+        <!-- meta info -->
+        <div class="left">
+          <div class="author">Antidude</div>
+          <div class="toolbar">
+            <img src="../images/cross.png" alt="delete">
+            <img src="../images/pencil.png" alt="edit">
+            <img src="../images/reply.png" alt="reply">
+          </div>
+        </div>
+
+        <!-- content goes here -->
+        <div class="right">
+          <div class="time">12:24 pm</div>
+
+          Im just really not sure man, it's so hard to tell these days with all the wanking
+          and the spanking. Im just not sure and blah and I like hte iPhone and Jobsification
+          and what do you know about phones anyway damn linux head.
+          <p>
+        </div>
+        <!-- end right -->
+
+      </div>
+      <!-- end blip -->
+
+
+      <div class="indent">
+        <div class="blip">
+          <!-- meta info -->
+          <div class="left">
+            <div class="author unread">Greg</div>
+            <div class="toolbar">
+              <img src="../images/cross.png" alt="delete">
+              <img src="../images/pencil.png" alt="edit">
+              <img src="../images/reply.png" alt="reply">
+            </div>
+          </div>
+
+          <!-- content goes here -->
+          <div class="right">
+            <div class="time">12:33 pm</div>
+            You're totally kidding right? This is bogus.<p>
+          </div>
+          <!-- end right -->
+
+        </div>
+        <!-- end blip -->
+
+      </div>
+
+
+      <div id="blip-999" class="blip">
+        <!-- meta info -->
+        <div class="left">
+          <div class="author">iDude</div>
+          <div class="toolbar">
+            <img src="../images/cross.png" alt="delete">
+            <img src="../images/pencil.png" alt="edit">
+            <img src="../images/reply.png" alt="reply">
+          </div>
+        </div>
+
+        <!-- content goes here -->
+        <div class="right">
+          <div class="time">3:01 am</div>
+          Bah. I want iPad
+          <p>
+        </div>
+        <!-- end right -->
+
+      </div>
+      <!-- end blip -->
+      -->
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

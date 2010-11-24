@@ -1,0 +1,11 @@
+URL: http://code.google.com/p/google-gson/
+Version: 1.4
+License: Apache 2.0
+
+License File: COPYING
+
+Description:
+A Java library to convert JSON to Java objects and vice-versa
+
+Local Modifications:
+No modifications.
