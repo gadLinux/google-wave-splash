@@ -1,0 +1,11 @@
+URL: http://jakarta.apache.org/commons/httpclient/
+Version: 4.0.1
+License: Apache 2.0
+
+License File: COPYING
+
+Description:
+Jakarta Commons HTTP Components
+
+Local Modifications:
+No modifications.

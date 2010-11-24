@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Embeds a Wave</title>
+  <script type="text/javascript" src="embed.js"></script>
+  <script type="text/javascript">
+
+    function load() {
+      // Wave with discussion + pictures
+      var waveid = "googlewave.com!w+c8tgJaSLA";
+
+      var targetDiv = document.getElementById('waveframe');
+      var wavePanel = new google.wave.WavePanel({
+        rootUrl: "http://localhost:8080/",
+        target: targetDiv,
+        header: true,
+        toolbar: false,
+        footer: false,
+        color: "red",
+        bgcolor: "blue",
+        font: "Times New Roman",
+        fontSize: "14px",
+        lite: true
+      });
+      wavePanel.loadWave(waveid, function() {
+      });  // load wave
+    }
+
+  </script>
+</head>
+<body onload="load()">
+  Wave [id: googlewave.com!w+c8tgJaSLA] embedded below:
+  <div id="waveframe" style="height:400px; border: 1px dashed #add8e6">
+  </div>
+</body>
+</html>

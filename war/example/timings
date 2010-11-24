@@ -1,0 +1,71 @@
+BEFORE
+------
+WaveOpenHandler#loadWaveletInto (smartFetch)	0.911s	1.229s	0.000s
+WaveletUpdateRpc#renderWave	0.911s	1.229s	0.000s
+WaveRenderer#render	0.911s	1.229s	0.000s
+WaveRenderer.loadProfiles	0.000s	0.008s	0.000s
+ContentRenderer#renderHtml	0.000s	0.032s	0.000s
+
+AFTER
+-----
+WaveOpenHandler#loadWaveletInto (smartFetch)	0.238s	0.483s	0.000s
+WaveletUpdateRpc#renderWave	0.238s	0.483s	0.000s
+WaveRenderer#render	0.238s	0.483s	0.000s
+WaveRenderer.loadProfiles	0.000s	0.007s	0.000s
+ContentRenderer#renderHtml	0.000s	0.010s	0.000s
+
+NOTHING_IN_CONTENT
+------------------
+WaveOpenHandler#loadWaveletInto (smartFetch)	0.194s	0.309s	0.000s
+WaveletUpdateRpc#renderWave	0.193s	0.309s	0.000s
+WaveRenderer#render	0.193s	0.309s	0.000s
+WaveRenderer.loadProfiles	0.000s	0.012s	0.000s
+ContentRenderer#renderHtml	0.000s	0.005s	0.000s
+
+
+--------------
+header
+
+BEFORE
+------
+WaveOpenHandler#loadWaveletInto (smartFetch)	0.237s	0.613s	0.000s
+smartFetch	0.237s	0.613s	0.000s
+WaveletUpdateRpc#renderWave	0.246s	0.613s	0.000s
+WaveRenderer#render	0.225s	0.559s	0.000s
+WaveRenderer#renderHeader	0.020s	0.053s	0.000s
+WaveRenderer.loadProfiles	0.000s	0.004s	0.000s
+ContentRenderer#renderHtml	0.000s	0.008s	0.000s
+
+AFTER
+-----
+WaveOpenHandler#loadWaveletInto (smartFetch)	0.239s	0.432s	0.000s
+smartFetch	0.239s	0.432s	0.000s
+WaveletUpdateRpc#renderWave	0.239s	0.432s	0.000s
+WaveRenderer#render	0.234s	0.428s	0.000s
+WaveRenderer#renderHeader	0.003s	0.013s	0.000s
+WaveRenderer.loadProfiles	0.000s	0.026s	0.000s
+ContentRenderer#renderHtml	0.000s	0.022s	0.000s
+
+
+--------------
+paging
+
+BEFORE
+------
+WaveOpenHandler#loadWaveletInto (smartFetch)	0.243s	0.508s	0.000s
+WaveletUpdateRpc#renderWave	0.243s	0.508s	0.000s
+WaveRenderer#render	0.238s	0.504s	0.000s
+WaveRenderer#renderHeader	0.003s	0.015s	0.000s
+WaveRenderer.loadProfiles	0.000s	0.012s	0.000s
+ContentRenderer#renderHtml	0.000s	0.006s	0.000s
+
+
+AFTER
+-----
+WaveOpenHandler#loadWaveletInto (smartFetch)	0.074s	0.953s	0.000s
+smartFetch	0.074s	0.953s	0.000s
+WaveletUpdateRpc#renderWave	0.028s	0.068s	0.000s
+WaveRenderer#render	0.022s	0.055s	0.000s
+WaveRenderer#renderHeader	0.004s	0.012s	0.000s
+WaveRenderer.loadProfiles	0.000s	0.001s	0.000s
+ContentRenderer#renderHtml	0.000s	0.035s	0.000s

@@ -1,0 +1,230 @@
+<!-- Copyright 2010 Google Inc.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
+<project name="splash" default="make">
+  <!-- author: Dhanji R. Prasanna (dhanji@gmail.com) -->
+
+  <property file="build.properties"/>
+  <available file="${user.home}/splash.properties" property="creds.ok"/>
+
+  <path id="web.classpath">
+    <fileset dir="war/WEB-INF/lib" includes="*.jar"/>
+  </path>
+  <path id="build.classpath">
+    <fileset dir="lib" includes="*.jar"/>
+  </path>
+
+  <target name="clean">
+    <delete dir="${build}"/>
+    <delete dir="war/WEB-INF/classes"/>
+    <delete file="${out.jar}"/>
+  </target>
+
+  <target name="init">
+    <mkdir dir="${build}"/>
+    <mkdir dir="${build}/raw"/>
+    <mkdir dir="${build}/test"/>
+
+    <mkdir dir="war/WEB-INF/classes"/>
+    <mkdir dir="war/WEB-INF/lib"/>
+  </target>
+
+  <target name="make" depends="init">
+    <javac srcdir="src" destdir="war/WEB-INF/classes" target="1.6" debug="on">
+      <classpath refid="web.classpath"/>
+    </javac>
+  </target>
+
+  <target name="test" depends="make">
+    <javac srcdir="test" destdir="${build}/test" target="1.6" debug="on">
+      <classpath>
+        <path refid="web.classpath"/>
+        <path refid="build.classpath"/>
+        <pathelement location="war/WEB-INF/classes"/>
+      </classpath>
+    </javac>
+
+    <junit fork="true" haltonfailure="true">
+      <classpath>
+        <path refid="web.classpath"/>
+        <path refid="build.classpath"/>
+        <pathelement location="war/WEB-INF/classes"/>
+        <pathelement location="${build}/test"/>
+      </classpath>
+      <test name="com.google.wave.splash.AllTests"/>
+      <formatter type="plain" usefile="false" />
+    </junit>
+  </target>
+
+  <target name="deploy">
+    <exec taskname="appcfg" command="appcfg.sh update war"/>
+  </target>
+
+  <target name="run" depends="make"
+          description="Call to run the server with Jetty locally (port=8080), much faster">
+    <antcall target="run-app"/>
+    <antcall target="die-app"/> 
+  </target>
+
+  <target name="run-app" if="creds.ok">
+    <!-- copy over static resources too, so they are available for local run -->
+    <copy todir="war/WEB-INF/classes">
+      <fileset dir="src">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
+
+    <java classname="com.google.wave.splash.JettyRun" fork="true">
+      <sysproperty key="splash.credentials.properties" value="${user.home}/splash.properties"/>
+      <classpath>
+        <path refid="web.classpath"/>
+        <path location="war/WEB-INF/classes"/>
+      </classpath>
+    </java>
+  </target>
+
+  <target name="die-app" unless="creds.ok">
+    <echo message="OAuth Credentials were not found at ${user.home}/splash.properties. See http://code.google.com/p/wave-protocol/wiki/SplashInstallation for details"/>
+  </target>
+
+  <target name="compile-js" depends="init"
+          description="Compiles and minifies javascript for all clients into a unique versioned binary">
+    <!-- concatenate the embed permutation -->
+    <concat destfile="${src.embed.js}">
+      <fileset dir="war/js">
+        <include name="rpc.js"/>
+        <include name="permalink_client.js"/>
+        <include name="gadget.js"/>
+      </fileset>
+    </concat>
+
+    <!-- concatenate the full client permutation -->
+    <concat destfile="${src.full.js}">
+      <fileset dir="war/js">
+        <include name="jquery.lightbox-0.5.min.js"/>
+        <include name="jScrollTouch.js"/>
+        <include name="editor.js"/>
+        <include name="gadget.js"/>
+        <include name="rpc.js"/>
+        <include name="common-client.js"/>
+        <include name="full_client.js"/>
+      </fileset>
+    </concat>
+
+    <!-- generate a checksum for this file -->
+    <checksum file="${src.embed.js}" property="embed.js.md5"/>
+    <property name="minified.embed.js" value="embed_${embed.js.md5}.js"/>
+    <checksum file="${src.full.js}" property="full.js.md5"/>
+    <property name="minified.full.js" value="full_client_${full.js.md5}.js"/>
+
+    <!-- compile with js-compiler -->
+    <java fork="true" jar="lib/closure_compiler.jar">
+      <arg line="--js ${src.embed.js} --js_output_file ${out.resources}/${minified.embed.js}"/>
+    </java>
+
+    <java fork="true" jar="lib/closure_compiler.jar">
+      <arg line="--js ${src.full.js} --js_output_file ${out.resources}/${minified.full.js}"/>
+    </java>
+
+    <minify embed-js="${minified.embed.js}" full-js="${minified.full.js}" />
+  </target>
+
+  <!-- TODO(dhanji): compress CSS and the full_client stuff -->
+  <macrodef name="minify">
+    <attribute name="embed-js"/>
+    <attribute name="full-js"/>
+    <sequential>
+      <copy todir="${out.resources}">
+        <fileset dir="war">
+          <include name="permalink_client.html"/>
+          <include name="full_client.html"/>
+          <include name="*.fragment"/>
+        </fileset>
+      </copy>
+
+      <!-- compress whitespace -->
+      <replaceregexp match="\s+" replace=" " flags="g" byline="true">
+        <fileset dir="${out.resources}">
+          <include name="*.html"/>
+        </fileset>
+      </replaceregexp>
+
+      <!-- remove all the CRs and LFs -->
+      <replaceregexp match="[\r\n]+" replace="" flags="g" byline="false">
+        <fileset dir="${out.resources}">
+          <include name="*.html"/>
+        </fileset>
+      </replaceregexp>
+
+      <!-- now replace the linked scripts with a minified glob for permalink and full clients -->
+      <replaceregexp match="${minify-regex}"
+                     replace="${script-start}/js/@{embed-js}${script-end}"
+                     byline="false" flags="m">
+        <fileset dir="${out.resources}">
+          <include name="permalink_client.html"/>
+        </fileset>
+      </replaceregexp>
+      <replaceregexp match="${minify-regex}"
+                     replace="${script-start}/js/@{full-js}${script-end}"
+                     byline="false" flags="m">
+        <fileset dir="${out.resources}">
+          <include name="full_client.html"/>
+        </fileset>
+      </replaceregexp>
+
+      <!-- copy over js resources too, so they can be packaged -->
+      <copy todir="${out.resources}" flatten="true">
+        <fileset dir="war">
+          <include name="js/*"/>
+        </fileset>
+      </copy>
+    </sequential>
+  </macrodef>
+
+  <target name="stage">
+    <copy todir="${build}/jar">
+      <fileset dir="war/WEB-INF/classes" includes="**/*">
+        <!-- eliminate Jetty and related stuff from library staging -->
+        <exclude name="**/JettyRun*"/>
+      </fileset>
+    </copy>
+
+    <!-- copy over static resources too, so they can be packaged -->
+    <copy todir="${out.resources}" flatten="true">
+      <fileset dir="war">
+        <include name="images/*"/>
+        <include name="style/*"/>
+      </fileset>
+    </copy>
+
+    <!-- copy over static resources too, so they can be packaged -->
+    <copy todir="${build}/jar">
+      <fileset dir="src">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="pack" depends="make,stage,compile-js"
+      description="Packages a production jar for deployment or standalone run">
+    <jar destfile="${out.jar}" basedir="${build}/jar">
+      <manifest>
+        <attribute name="Implementation-Vendor" value="Google, Inc."/>
+        <attribute name="Implementation-Title" value="Splash Wave Library"/>
+        <attribute name="Implementation-Version" value="0.1"/>
+      </manifest>
+    </jar>
+  </target>
+
+</project>

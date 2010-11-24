@@ -1,0 +1,11 @@
+URL: http://jsr107cache.sf.net/
+Version: 1.1
+License: Apache 2.0
+
+License File: COPYING
+
+Description:
+jsr-107 JCache API
+
+Local Modifications:
+No modifications.

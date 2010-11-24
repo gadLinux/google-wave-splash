@@ -1,0 +1,6 @@
+The following codebases were merged into src/net/oauth
+
+oauth commons:     http://oauth.googlecode.com/svn/code/java/core/commons/
+oauth provider:    http://oauth.googlecode.com/svn/code/java/core/provider/
+oauth consumer:    http://oauth.googlecode.com/svn/code/java/core/consumer/
+oauth httpclient4: http://oauth.googlecode.com/svn/code/java/core/httpclient4/

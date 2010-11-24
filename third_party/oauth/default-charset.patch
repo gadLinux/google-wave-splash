@@ -1,0 +1,11 @@
+--- src/net/oauth/http/HttpMessage.java	2010-07-12 16:41:50.655320000 +1000
++++ src/net/oauth/http/HttpMessage.java	2010-07-12 16:56:28.442721000 +1000
+@@ -214,7 +214,7 @@
+     public static final String CONTENT_ENCODING = "Content-Encoding";
+     public static final String CONTENT_LENGTH = "Content-Length";
+     public static final String CONTENT_TYPE = "Content-Type";
+-    public static final String DEFAULT_CHARSET = "ISO-8859-1";
++    public static final String DEFAULT_CHARSET = "UTF-8";
+ 
+     private static final Pattern CHARSET = Pattern
+             .compile("; *charset *= *([^;\"]*|\"([^\"]|\\\\\")*\")(;|$)");

@@ -1,0 +1,14 @@
+URL: http://oauth.googlecode.com/svn/code/java/core/
+Version: svn r1201
+License: Apache 2.0
+
+License File: COPYING
+
+Description:
+An implementation of Oauth for Java
+
+Local Modifications:
+
+Changed the default HttpMessage charset to UTF-8 - patch is in 
+default-charset.patch
+
